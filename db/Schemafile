@@ -1,0 +1,12 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+create_table "irasutoya_monsters", unsigned: true, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", comment: "monsters from https://www.irasutoya.com/" do |t|
+  t.string :name, null: false
+  t.string :page_url, null: false
+  t.string :image_url, null: false
+  t.timestamps
+end
+add_index :irasutoya_monsters, :image_url, unique: true
+add_index :irasutoya_monsters, :page_url, unique: true
+
