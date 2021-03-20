@@ -15,9 +15,12 @@ class IrasutoyaMonstersController < ApplicationController
       doc = doc_open(SEARCH_URL_BASE + word)
       links = doc.xpath('//*[@id="post"]/div[1]/a')
       next if links.blank?
-      link = links[0].attributes&.[]("href").value
-      target = Struct.new("Target", :word, :link_url).new(word, link)
-      targets.push(target)
+      links.each { |link|
+        link_value = link.attributes&.[]("href").value
+        next if link_value.blank?
+        target = Struct.new("Target", :word, :link_url).new(word, link_value)
+        targets.push(target)
+      }
     }
     monsters = IrasutoyaMonster.where(page_url: targets.map { |e| e.link_url })
     json_response(monsters)
