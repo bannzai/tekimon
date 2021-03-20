@@ -7,11 +7,13 @@ class IrasutoyaMonstersController < ApplicationController
   SEARCH_URL_BASE = 'https://www.irasutoya.com/search?q='
   def index
     words = irastuoya_monsters_params[:words]
+    puts "words: #{words}"
     return json_response([]) if words.blank?
-    words = words.split(',').sample(10)
-    words = words.sample(10)
+    splited = words.split(',').sample(10)
+    selected_words = splited.sample(10)
+    puts "selected_words: #{selected_words}"
     targets = []
-    words.each { |word| 
+    selected_words.each { |word| 
       doc = doc_open(SEARCH_URL_BASE + word)
       links = doc.xpath('//*[@id="post"]/div[1]/a')
       next if links.blank?
