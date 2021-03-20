@@ -13,9 +13,9 @@ default: &default
   adapter: mysql2
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: root
-  password:
-  host: localhost
+  username: user
+  password: password
+  host: mysql
 
 development:
   <<: *default
@@ -50,6 +50,8 @@ test:
 #
 production:
   <<: *default
-  database: tekimon_production
-  username: tekimon
-  password: <%= ENV['TEKIMON_DATABASE_PASSWORD'] %>
+  username: <%= ENV['MYSQL_USER'] %>
+  password: <%= ENV['MYSQL_ROOT_PASSWORD'] %>
+  database: <%= ENV['MYSQL_DATABASE'] %>
+  host: <%= ENV['MYSQL_HOST'] %>
+  socket: <%= ENV['MYSQL_SOCKET'] %>
