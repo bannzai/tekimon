@@ -20,6 +20,21 @@ class IrasutoyaMonstersController < ApplicationController
       links.each { |link|
         link_value = link.attributes&.[]("href").value
         next if link_value.blank?
+
+        unless IrasutoyaMonster.exists?(page_url: link_value)
+          element_page = doc_open(link_value)
+          name_element = element_page.xpath('//*[@id="post"]/div[1]/h2').first
+          next if name_element.nil?
+          img = element_page.xpath('//*[@id="post"]/div[2]/div[1]/a/img').first
+          next if img.nil?
+          image_url = img.attributes&.[]("src").value
+
+          name = name_element.children[0].to_s.delete_prefix("\n").delete_suffix("\n")
+
+          attack_point = rand(100...10000)
+          IrasutoyaMonster.create(name: name, page_url: link_value, image_url: image_url, attack_point: attack_point)
+        end
+
         target = Struct.new("Target", :word, :link_url).new(word, link_value)
         targets.push(target)
       }
