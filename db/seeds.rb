@@ -5,3 +5,14 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+require "csv"
+
+CSV.foreach('db/seed.csv', headers: true) do |row|
+  IrasutoyaMonster.create(
+    name: row['name'],
+    page_url: row['page_url'],
+    image_url: row['image_url'],
+    attack_point: row['attack_point']
+  )
+end
