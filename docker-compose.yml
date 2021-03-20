@@ -1,0 +1,28 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.0.23
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_general_ci
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: tekimon_development
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 
+  app:
+    tty: true
+    stdin_open: true
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+volumes:
+  mysql-data:
+    driver: local
+
