@@ -18,6 +18,6 @@ COPY . /app
 COPY bin/run /usr/bin/
 RUN chmod +x /usr/bin/run
 ENTRYPOINT ["bin/run"]
-EXPOSE 3000
+EXPOSE 8080
 
 CMD ["bin/run"]
