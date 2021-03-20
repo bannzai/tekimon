@@ -1,20 +1,25 @@
 require 'nokogiri'
-require 'pry'
+require 'open-uri'
+
 
 class IrasutoyaMonstersController < ApplicationController
-
+  CHARSET = 'utf-8'
   SEARCH_URL_BASE = 'https://www.irasutoya.com/search?q='
   def index
     words = irastuoya_monsters_params[:words]
     return json_response([]) if words.blank?
     words = words.split(',').sample(10)
     words = words.sample(10)
-    monsters = IrasutoyaMonster.all
-    words.each { |w| 
-      doc_open(SEARCH_URL_BASE + word)
-      binding.pry
+    targets = []
+    words.each { |word| 
+      doc = doc_open(SEARCH_URL_BASE + word)
+      links = doc.xpath('//*[@id="post"]/div[1]/a')
+      next if links.blank?
+      link = links[0].attributes&.[]("href").value
+      target = Struct.new("Target", :word, :link_url).new(word, link)
+      targets.push(target)
     }
-    binding.pry
+    monsters = IrasutoyaMonster.where(page_url: targets.map { |e| e.link_url })
     json_response(monsters)
   end
 
