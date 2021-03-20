@@ -14,7 +14,6 @@ RUN bundle install
 WORKDIR /app
 COPY . /app
 
-
 COPY bin/run /usr/bin/
 RUN chmod +x /usr/bin/run
 ENTRYPOINT ["bin/run"]
