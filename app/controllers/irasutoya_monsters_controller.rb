@@ -9,8 +9,8 @@ class IrasutoyaMonstersController < ApplicationController
     words = irastuoya_monsters_params[:words]
     puts "words: #{words}"
     return json_response([]) if words.blank?
-    splited = words.split(',').sample(10)
-    selected_words = splited.sample(10)
+    splited = words.split(',').sample(4)
+    selected_words = splited.sample(4)
     puts "selected_words: #{selected_words}"
     targets = []
     selected_words.each { |word| 
