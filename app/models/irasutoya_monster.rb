@@ -1,0 +1,2 @@
+class IrasutoyaMonster < ApplicationRecord
+end
